@@ -434,6 +434,7 @@ unsigned FindResWord( const char *name, unsigned char size )
 {
     struct ReservedWord *inst;
     unsigned i;
+
 #ifdef BASEPTR
     __segment seg = FP_SEG( resw_strings );
 #endif

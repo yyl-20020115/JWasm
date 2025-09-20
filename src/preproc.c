@@ -63,7 +63,7 @@ ret_code WriteCodeLabel( char *line, struct asm_tok tokenarray[] )
     Token_Count = 2;
     tokenarray[2].token = T_FINAL;
     *tokenarray[2].tokpos = NULLC;
-    rc = ParseLine( tokenarray );
+    rc = ParseLine( tokenarray ,0);
     if ( Options.preprocessor_stdout == TRUE )
         WritePreprocessedLine( line );
     Token_Count = oldcnt;
@@ -81,7 +81,7 @@ ret_code WriteCodeLabel( char *line, struct asm_tok tokenarray[] )
  * 2. (text) macros are expanded by ExpandLine()
  * 3. "preprocessor" directives are executed
  */
-int PreprocessLine( char *line, struct asm_tok tokenarray[] )
+int PreprocessLine( char *line, struct asm_tok tokenarray[] ,int line_number)
 /***********************************************************/
 {
     int i;

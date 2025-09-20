@@ -1027,7 +1027,7 @@ static int OnePass( void )
  #else
             if ( Token_Count = Tokenize( CurrSource, 0, ModuleInfo.tokenarray, TOK_DEFAULT ) )
  #endif
-                ParseLine( ModuleInfo.tokenarray );
+                ParseLine( ModuleInfo.tokenarray ,0);
             LineStoreCurr = LineStoreCurr->next;
         }
     } else

@@ -642,9 +642,9 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
          * v2.11 GetPreprocessedLine() replaced by GetTextLine()
          * and PreprocessLine().
          */
-
+        int line_number = 1;
         while ( GetTextLine( CurrSource ) ) {
-            if ( PreprocessLine( CurrSource, tokenarray ) == 0 )
+            if ( PreprocessLine( CurrSource, tokenarray ,line_number) == 0 )
                 continue;
             /* skip macro label lines */
             if ( tokenarray[0].token == T_COLON ) {
@@ -757,7 +757,7 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
                     break;
                 }
             }
-            ParseLine( tokenarray );
+            ParseLine( tokenarray ,line_number);
             if ( Options.preprocessor_stdout == TRUE )
                 WritePreprocessedLine( CurrSource );
 

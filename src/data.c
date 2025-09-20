@@ -1165,7 +1165,9 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
 
     /* v2.05: the previous test in parser.c wasn't fool-proved */
     if ( i > 1 && ModuleInfo.m510 == FALSE ) {
-        return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+		//NOTICE: _label: db 123 is valid!
+        if(tokenarray[i].token != T_DIRECTIVE)
+            return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
     }
     if( tokenarray[i+1].token == T_FINAL ) {
         DebugMsg(("data_dir: missing initializer\n"));

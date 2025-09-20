@@ -562,7 +562,12 @@ ret_code ExternDirective( int i, struct asm_tok tokenarray[] )
 
         /* get the symbol name */
         if( tokenarray[i].token != T_ID ) {
-            return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+            if (tokenarray[i].alt_token == T_ID) {
+                tokenarray[i].token = tokenarray[i].alt_token;
+            }
+            else {
+                return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+            }
         }
         token = tokenarray[i++].string_ptr;
 

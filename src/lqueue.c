@@ -182,14 +182,14 @@ void RunLineQueue( void )
     line_queue.head = NULL;
     DebugCmd( lqlines_written = 0 ); /* reset counter for AddLineQueue() */
     DebugCmd( lqlines_read = 0 ); /* reset counter for line-queue reads below */
-
+    int line_number = 1;
     for ( ; currline; ) {
         struct lq_line *nextline = currline->next;
         strcpy( CurrSource, currline->line );
         DebugCmd ( lqlines_read++ );
         MemFree( currline );
-        if ( PreprocessLine( CurrSource, tokenarray ) )
-            ParseLine( tokenarray );
+        if ( PreprocessLine( CurrSource, tokenarray ,line_number) )
+            ParseLine( tokenarray ,line_number);
         currline = nextline;
     }
 

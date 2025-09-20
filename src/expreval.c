@@ -3244,12 +3244,18 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
         curr_operator = *i;
         DebugMsg1(("%u evaluate loop, operator=>%s< opnd1->sym=%p, type=%s\n",
                    evallvl, tokenarray[curr_operator].string_ptr, opnd1->sym, (opnd1->type ? opnd1->type->name : "NULL") ));
-
+        //NOTICE: patch
+        if (tokenarray[curr_operator].alt_token_other != T_NOTHING)
+        {
+            tokenarray[curr_operator].token =
+                tokenarray[curr_operator].alt_token_other;
+        }
         if ( opnd1->kind != EXPR_EMPTY ) {
             /* check operator behind operand. Must be binary or open bracket */
             if ( tokenarray[curr_operator].token == '+' || tokenarray[curr_operator].token == '-' )
                 tokenarray[curr_operator].specval = BINARY_PLUSMINUS;
-            else if( !is_operator( tokenarray[curr_operator].token ) || tokenarray[curr_operator].token == T_UNARY_OPERATOR ) {
+            else if( !is_operator( tokenarray[curr_operator].token ) 
+                || tokenarray[curr_operator].token == T_UNARY_OPERATOR ) {
                 DebugMsg(("%u evaluate: unexpected token at idx=%u, token=%X >%s<\n", evallvl, curr_operator, tokenarray[curr_operator].token, tokenarray[curr_operator].tokpos ));
                 rc = ERROR;
                 //if ( !opnd2.is_opattr )  /* v2.11: opnd2 was accessed before initialization */
@@ -3391,6 +3397,9 @@ static bool is_expr_item( struct asm_tok *item )
  * DUP, comma or other instructions or directives terminate the expression.
  */
 {
+    if (item->token == T_INSTRUCTION && item->alt_token == T_ID) {
+        item->token = item->alt_token;
+    }
     switch( item->token ) {
     case T_INSTRUCTION:
         switch( item->tokval ) {

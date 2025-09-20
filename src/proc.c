@@ -3048,7 +3048,7 @@ ret_code RetInstr( int i, struct asm_tok tokenarray[], int count )
         /* v2.19: UseSavedState is 1 only if pass > 1 */
         if ( UseSavedState ) {
             DebugMsg1(( "RetInstr() exit, calling ParseLine(%s)\n", tokenarray[0].tokpos ));
-            return( ParseLine( tokenarray ) );
+            return( ParseLine( tokenarray ,0) );
         }
         /* handle the current line (the "ret") as if it is REPLACED by the macro content */
         if ( StoreState ) *(LineStoreCurr->line) = ';';

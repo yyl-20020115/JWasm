@@ -61,14 +61,19 @@ enum tok_type {
     T_COLON         = ':',
     T_DOT           = '.',
     T_QUESTION_MARK = '?',
-    T_PERCENT       = '%'
+    T_PERCENT       = '%',
+    T_NOTHING       = -1
 };
 
 struct asm_tok {
 #ifdef __WATCOMC__
     enum tok_type token;           /* (type of) token */
+    enum tok_type alt_token;           /* (type of) token */
+    enum tok_type alt_token_other;           /* (type of) token */
 #else
     unsigned char token;
+    unsigned char alt_token;
+    enum tok_type alt_token_other;           /* (type of) token */
 #endif
     union {
         unsigned char dirtype;    /* T_DIRECTIVE: type */

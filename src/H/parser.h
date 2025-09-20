@@ -316,7 +316,7 @@ extern void       sym_ext2int( struct asym * );
 extern int        OperandSize( enum operand_type, const struct code_info * );
 extern void       set_frame( const struct asym *sym );
 extern void       set_frame2( const struct asym *sym );
-extern ret_code   ParseLine( struct asm_tok[] );
+extern ret_code   ParseLine( struct asm_tok[], int line_number);
 extern void       ProcessFile( struct asm_tok[] );
 
 extern void       WritePreprocessedLine( const char * );

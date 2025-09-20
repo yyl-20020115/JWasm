@@ -9,8 +9,12 @@ file(GLOB SOURCES src/*.c)
 
 add_executable(jwasm ${SOURCES})
 
+if(MSVC)
+    target_compile_options(jwasm PRIVATE -D_CRT_SECURE_NO_WARNINGS)
+endif()
+
 # Include directories
-target_include_directories(jwasm PRIVATE include)
+target_include_directories(jwasm PRIVATE src/H)
 
 # Optional: Set output directory
 set_target_properties(jwasm PROPERTIES
