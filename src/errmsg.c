@@ -64,7 +64,9 @@ static const char usage[] = {
 
 
 #ifdef DEBUG_OUT
-
+#ifndef DBGLOGFILE
+#define DBGLOGFILE "log.txt"
+#endif
 /* there are intransparent IDEs that don't want to tell you the real, current command line arguments
  * and often those tools also swallow anything that is written to stdout or stderr.
  * To make jwasm write a trace log to a file, enable the next line!
