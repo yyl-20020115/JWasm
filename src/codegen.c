@@ -153,7 +153,7 @@ static void output_opc( struct code_info *CodeInfo )
             tmp == AP_REP &&
             ins->allowed_prefix == AP_REPxx )
             tmp = AP_REPxx;
-        //NOTICE:
+		//NOTICE:no need to determine if prefix is valid here,
         if(0 && ins->allowed_prefix != tmp ) {
             //always ok
             //EmitError( INSTRUCTION_PREFIX_NOT_ALLOWED );

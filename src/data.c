@@ -829,7 +829,6 @@ next_item:  /* <--- continue scan if a comma has been detected */
             switch ( no_of_bytes ) {
             case 1:
                 /* forward reference? */
-                        //NOTICE: external maybe acceptable
                 if ( Parse_Pass == PASS_1 
                     && 
                     (opndx.sym !=0)
@@ -838,7 +837,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
                     fixup_type = FIX_VOID; /* v2.10: was regression in v2.09 */
                 } else {
                     //NOTICE: should give warning
-                    goto do_default;
+                    //goto do_default;
                     DebugMsg(("data_item.ADDR: error, an offset wont fit in a BYTE\n" ));
                     EmitError( OFFSET_MAGNITUDE_TOO_LARGE );
                     fixup_type = FIX_OFF8;
