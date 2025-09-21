@@ -969,7 +969,12 @@ ret_code PublicDirective( int i, struct asm_tok tokenarray[] )
         GetLangType( &i, tokenarray, &langtype );
 
         if ( tokenarray[i].token != T_ID ) {
-            return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+            if (tokenarray[i].alt_token == T_ID) {
+                tokenarray[i].token = T_ID;
+            }
+            else {
+                return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+            }
         }
         /* v2.19: syntax extension: scan for optional EXPORT attribute */
         isexport = FALSE;

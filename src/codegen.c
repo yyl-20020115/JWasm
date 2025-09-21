@@ -153,11 +153,14 @@ static void output_opc( struct code_info *CodeInfo )
             tmp == AP_REP &&
             ins->allowed_prefix == AP_REPxx )
             tmp = AP_REPxx;
-
-        if( ins->allowed_prefix != tmp ) {
-            EmitError( INSTRUCTION_PREFIX_NOT_ALLOWED );
-        } else
-            OutputCodeByte( InstrTable[ IndexFromToken( CodeInfo->prefix.ins )].opcode );
+        //NOTICE:
+        if(0 && ins->allowed_prefix != tmp ) {
+            //always ok
+            //EmitError( INSTRUCTION_PREFIX_NOT_ALLOWED );
+        }
+        else {
+            OutputCodeByte(InstrTable[IndexFromToken(CodeInfo->prefix.ins)].opcode);
+        }
     }
     /*
      * Output FP FWAIT if required

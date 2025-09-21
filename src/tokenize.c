@@ -806,16 +806,16 @@ static ret_code get_id(struct asm_tok* buf, struct line_status* p)
 		//if it is reserved word, it can be id,or other
 		buf->alt_token = T_ID;
 
-		if (0 == stricmp(p->output, "and")) {
+		if (0 == stricmp(p->output, "AND")) {
 
 			buf->alt_token_other = T_BINARY_OPERATOR;
 
 		}
-		else if (0 == stricmp(p->output, "or")) {
+		else if (0 == stricmp(p->output, "OR")) {
 			buf->alt_token_other = T_BINARY_OPERATOR;
 
 		}
-		else if (0 == stricmp(p->output, "not")) {
+		else if (0 == stricmp(p->output, "NOT")) {
 			buf->alt_token_other = T_UNARY_OPERATOR;
 
 		}

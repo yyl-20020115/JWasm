@@ -3326,12 +3326,18 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 
             if ( tokenarray[*i].token == '+' || tokenarray[*i].token == '-' )
                 tokenarray[*i].specval = BINARY_PLUSMINUS;
-            else if( !is_operator( tokenarray[*i].token ) || tokenarray[*i].token == T_UNARY_OPERATOR ) {
-                DebugMsg(("%u evaluate: unexpected token at %u, token=%X >%s<\n", evallvl, *i, tokenarray[*i].token, tokenarray[*i].tokpos ));
-                rc = ERROR;
-                if ( !opnd2.is_opattr ) /* don't emit error if expression is OPATTR operand */
-                    OperErr( *i, tokenarray );
-                break;
+            else if( !is_operator( tokenarray[*i].token ) 
+                || tokenarray[*i].token == T_UNARY_OPERATOR ) {
+                if (tokenarray[*i].alt_token_other == T_BINARY_OPERATOR) {
+                    tokenarray[*i].token = tokenarray[*i].alt_token_other;
+                }
+                else {
+                    DebugMsg(("%u evaluate: unexpected token at %u, token=%X >%s<\n", evallvl, *i, tokenarray[*i].token, tokenarray[*i].tokpos));
+                    rc = ERROR;
+                    if (!opnd2.is_opattr) /* don't emit error if expression is OPATTR operand */
+                        OperErr(*i, tokenarray);
+                    break;
+                }
             }
 
             if( get_precedence( &tokenarray[*i] ) >= get_precedence( &tokenarray[curr_operator] ) )
@@ -3397,9 +3403,6 @@ static bool is_expr_item( struct asm_tok *item )
  * DUP, comma or other instructions or directives terminate the expression.
  */
 {
-    if (item->token == T_INSTRUCTION && item->alt_token == T_ID) {
-        item->token = item->alt_token;
-    }
     switch( item->token ) {
     case T_INSTRUCTION:
         switch( item->tokval ) {
@@ -3422,6 +3425,11 @@ static bool is_expr_item( struct asm_tok *item )
             item->precedence = 13;
             return( TRUE );
         }
+        //if expr item is actually id
+        if (item->alt_token == T_ID) {
+            item->token = T_ID;
+            return TRUE;
+        }
         return( FALSE );
     case T_RES_ID:
         if ( item->tokval == T_DUP ) /* DUP must terminate the expression */
@@ -3434,12 +3442,17 @@ static bool is_expr_item( struct asm_tok *item )
             item->tokval = ( ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ) ? T_FAR : T_NEAR );
             return( TRUE );
         }
+        if (item->alt_token == T_ID) {
+            item->token = T_ID;
+            return TRUE;
+        }
         /* fall through. Other directives will end the expression */
     case T_COMMA:
     //case T_FLOAT: /* v2.05: floats are now handled */
     //case T_QUESTION_MARK: /* v2.08: no need to be handled here */
         return( FALSE );
     }
+
     return( TRUE );
 }
 

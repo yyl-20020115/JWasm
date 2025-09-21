@@ -3131,7 +3131,14 @@ ret_code ParseLine(struct asm_tok tokenarray[], int line_number)
 
 	DebugMsg1(("ParseLine enter, Token_Count=%u, ofs=%Xh\n",
 		Token_Count, GetCurrOffset()));
-
+	if (line_number == 0) {
+		if ((tokenarray[0].token == T_DIRECTIVE 
+			|| tokenarray[0].token == T_INSTRUCTION)
+			&& 1 < Token_Count && tokenarray[1].token == T_COLON)
+		{
+			tokenarray[0].token = T_ID;
+		}
+	}
 	i = 0;
 	if (tokenarray[0].alt_token == T_ID
 		&& (tokenarray[0].token == T_DIRECTIVE 
@@ -3150,6 +3157,7 @@ ret_code ParseLine(struct asm_tok tokenarray[], int line_number)
 		tokenarray[0].alt_token = T_NOTHING;
 		//goto for_exps;
 	}
+	for_label:
 	/* Does line start with a code label? */
 	if (tokenarray[0].token == T_ID && (tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON)) {
 		i = 2;
@@ -3237,10 +3245,8 @@ ret_code ParseLine(struct asm_tok tokenarray[], int line_number)
 				FStoreLine(FSL_NOCMT);
 			}
 #endif
-			if (tokenarray[i].dirtype > DRT_DATADIR
-				) {
-
-
+			if ((tokenarray[i].dirtype > DRT_DATADIR
+				)) {
 				temp = directive_tab[tokenarray[i].dirtype](i, tokenarray);
 			}
 			else {

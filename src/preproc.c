@@ -110,6 +110,14 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] ,int line_number)
 
     if ( Token_Count == 0 )
         return( 0 );
+	//NOTICE: check for label before directive or macro
+    if ((tokenarray[0].token == T_DIRECTIVE
+        || tokenarray[0].token == T_INSTRUCTION)
+        && 1 < Token_Count && tokenarray[1].token == T_COLON)
+    {
+        tokenarray[0].token = T_ID;
+        return Token_Count;
+    }
 
 #ifdef DEBUG_OUT
     /* option -np, skip preprocessor? */
@@ -140,7 +148,6 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] ,int line_number)
      */
     if ( tokenarray[i].token == T_DIRECTIVE &&
         tokenarray[i].dirtype <= DRT_INCLUDE ) {
-
         /* if i != 0, then a code label is located before the directive */
         if ( i > 1 ) {
             if ( ERROR == WriteCodeLabel( line, tokenarray ) )

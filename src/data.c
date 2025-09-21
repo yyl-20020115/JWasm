@@ -829,10 +829,16 @@ next_item:  /* <--- continue scan if a comma has been detected */
             switch ( no_of_bytes ) {
             case 1:
                 /* forward reference? */
-                if ( Parse_Pass == PASS_1 && opndx.sym && opndx.sym->state == SYM_UNDEFINED ) {
+                        //NOTICE: external maybe acceptable
+                if ( Parse_Pass == PASS_1 
+                    && 
+                    (opndx.sym !=0)
+                    && opndx.sym->state == SYM_UNDEFINED) {
                     DebugMsg(("data_item.ADDR: forward reference + OFFSET operator + DB -> may become error in Pass 2\n" ));
                     fixup_type = FIX_VOID; /* v2.10: was regression in v2.09 */
                 } else {
+                    //NOTICE: should give warning
+                    goto do_default;
                     DebugMsg(("data_item.ADDR: error, an offset wont fit in a BYTE\n" ));
                     EmitError( OFFSET_MAGNITUDE_TOO_LARGE );
                     fixup_type = FIX_OFF8;
@@ -859,6 +865,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
                 }
 #endif
             default:
+                do_default:
                 if ( opndx.sym && ( GetSymOfssize(opndx.sym) == USE16 ) )
                     fixup_type = FIX_OFF16;
                 else
