@@ -62,6 +62,11 @@ char *strupr(char *);
 
 #endif
 
+#ifndef DEBUG_OUT
+#define DEBUG_OUT
+#endif
+
+
 #define MAX_LINE_LEN            600  /* no restriction for this number */
 #define MAX_TOKEN  MAX_LINE_LEN / 4  /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */

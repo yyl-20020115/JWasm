@@ -848,7 +848,7 @@ struct asm_tok *PushInputStatus( struct input_status *oldstat )
     CurrSource = GetAlignedPointer( CurrSource, strlen( CurrSource ) );
     /**/myassert( ( CurrSource + MAX_LINE_LEN ) <= (char *)ModuleInfo.tokenarray );
 #ifdef DEBUG_OUT
-    /**/myassert( ( ModuleInfo.tokenarray + sizeof( struct asm_tok ) * MAX_TOKEN ) <= end_tokenarray );
+    /**/myassert2( ( ModuleInfo.tokenarray + sizeof( struct asm_tok ) * MAX_TOKEN ) <= end_tokenarray ,"Please check structure nesting around the given line.");
     /**/myassert( ( token_stringbuf + 2 * MAX_LINE_LEN ) <= end_stringbuf );
 #endif
 #endif

@@ -369,7 +369,7 @@ void WriteError( void )
 
 #ifndef NDEBUG
 
-int InternalError( const char *file, unsigned line )
+int InternalError( const char *file, unsigned line ,const char* prompt)
 /**************************************************/
 /* it's used by myassert() function in debug version */
 {
@@ -380,6 +380,10 @@ int InternalError( const char *file, unsigned line )
     GetCurrSrcPos( buffer );
     fprintf( errout, "%s", buffer );
     fprintf( errout, MsgGetEx( INTERNAL_ERROR ), file, line );
+    if (prompt != NULL) {
+        fprintf(errout, "%s", buffer);
+        fprintf(errout, "%s\n",prompt);
+    }
     close_files();
     exit( EXIT_FAILURE );
 #else

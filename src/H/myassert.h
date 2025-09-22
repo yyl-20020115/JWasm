@@ -38,8 +38,9 @@
 #if defined( __WATCOMC__ )
 #pragma aux InternalError aborts;
 #endif
-extern int InternalError( const char *file, unsigned line );
-#define myassert(expr)   ((void)((expr) ? 0 : InternalError(__FILE__,__LINE__)))
+extern int InternalError( const char *file, unsigned line, const char* prompt);
+#define myassert(expr)   ((void)((expr) ? 0 : InternalError(__FILE__,__LINE__,NULL)))
+#define myassert2(expr,prompt)   ((void)((expr) ? 0 : InternalError(__FILE__,__LINE__,prompt)))
 #endif
 
 #endif
